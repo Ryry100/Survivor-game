@@ -13,15 +13,15 @@ timer = 10
 #actors
 player = Actor("wizard", (WIDTH / 2, HEIGHT / 2))
 player.speed = 3
-
+player.transparency = 255
 
 
 green_guy = Actor("green_guy", (randint(1000, 2000), randint(1, 1000)))
 green_guy.speed = 2
 green_guy.is_visible= False
 
-
-axe_timer = 60 
+wizard_speed = 2
+axe_timer = 100 
 weapons = []
 
 def axe_attack():
@@ -35,9 +35,9 @@ def add_enemy():
     wizard = Actor("evil_wizard", (randint(1000, 2000), randint(1, 1000)))
     wizard.speed = 2
     enemies.append(wizard)
-closest = enemies[0]
+
 def get_closest_enemy():
-    global closest
+    closest = enemies[0]
     if len(enemies) > 0:    
         for enemy in enemies:
             if player.distance_to(enemy) < player.distance_to(closest):
@@ -49,8 +49,8 @@ def get_closest_enemy():
 def add_weapon():
     global axe_timer
     axe_timer -= 1
-    if axe_timer <= 0:
-        axe_timer = 60
+    if axe_timer <= 0 and len(enemies):
+        axe_timer = 300
         axe = Actor("axe", get_closest_enemy().pos)
         
         if len(weapons) >= 1:
@@ -94,14 +94,21 @@ def draw():
 def update():
     move()
     global timer
-
+    global wizard_speed
+    player.transparency -= 1
+    if player.transparency <= 0:
+         player.transparency =255
     timer -= 1
     add_weapon()
     for enemy in enemies:
         if enemy.collidelist(weapons)!= -1:
-            enemies.remove(enemy)
+            
+            enemy.transparency -= 5
+            if enemy.transparency <= 0:
+                enemies.remove(enemy)
+                wizard_speed + 1
             clock.schedule_unique(axe_attack, 0.599999999999999999999999999999999)
-        enemy.move_towards(player, 2)
+        enemy.move_towards(player, wizard_speed)
     if timer <= 0:
         timer = 60
         add_enemy()

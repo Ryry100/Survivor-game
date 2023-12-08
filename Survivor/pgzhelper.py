@@ -46,6 +46,7 @@ class Actor(Actor):
         self._scale = 1
         self._mask = None
         self._animate_counter = 0
+        self._transparency = 255
         self.fps = 5
         self.direction = 0
         super().__init__(image, pos, anchor, **kwargs)
@@ -172,6 +173,19 @@ class Actor(Actor):
     def flip_y(self, flip_y):
         self._flip_y = flip_y
         self._transform_surf()
+
+    @property
+    def transparency(self):
+        return self._transparency
+
+    @transparency.setter
+    def transparency(self, alpha):
+        self._transparency = alpha
+        self._set_transparency(alpha)
+
+
+    def _set_transparency(self, alpha):
+        self._surf.set_alpha(alpha)
 
     @property
     def image(self):
