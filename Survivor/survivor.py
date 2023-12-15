@@ -103,7 +103,7 @@ def update():
     for enemy in enemies:
         if enemy.collidelist(weapons)!= -1:
             
-            enemy.transparency -= 5
+            enemy.transparency -= 10
             if enemy.transparency <= 0:
                 enemies.remove(enemy)
                 wizard_speed + 1
