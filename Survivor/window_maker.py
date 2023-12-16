@@ -1,6 +1,18 @@
 from tkinter import *
-def new_window():
-    create_window=Toplevel()
-
 window = Tk()
-Button(text='create new window',command=new_window)
+def destroy_window():
+    window.destroy()
+def create_window():
+    new_window = Toplevel()
+    new_window.title='ANOTHER WINDOW'
+    new_window.geometry('500x300')
+    Label(new_window,text="YAY! You created another window!").pack()
+    Button(new_window,text='Close all windows',command=destroy_window).pack()
+    Button(new_window,text="Create a new window",command=create_window).pack()
+window.geometry("999x299")
+window.title("My First Window")
+
+Label(window,text='this is a window').pack()
+
+Button(window,text='this will create a new window',command=create_window).pack()
+window.mainloop()
